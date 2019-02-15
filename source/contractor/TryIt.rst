@@ -70,24 +70,25 @@ Now to create the db::
 
 Install base os config::
 
-  respkg -i contractor-os-base_0.0.respkg
-  respkg -i contractor-ubuntu-base_0.0.respkg
+  respkg -i contractor-os-base_0.1.respkg
+  respkg -i contractor-ubuntu-base_0.1.respkg
 
-Now to enable plugins::
+Now to enable plugins.
+We use manual for misc stuff that is either pre-configured or handled by something else::
 
-  respkg -i contractor-plugins-manual_0.0.respkg
+  respkg -i contractor-plugins-manual_0.1.respkg
 
 if you are using vcenter::
 
-  respkg -i contractor-plugins-vcenter_0.0.respkg
+  respkg -i contractor-plugins-vcenter_0.1.respkg
 
 if you are using virtualbox::
 
-  respkg -i contractor-plugins-virtualbox_0.0.respkg
+  respkg -i contractor-plugins-virtualbox_0.1.respkg
 
 do manual plugin again so it can cross link to the other plugins::
 
-  respkg -i contractor-plugins-manual_0.0.respkg
+  respkg -i contractor-plugins-manual_0.1.respkg
 
 Now to setup some base info, and configure bind::
 
@@ -95,10 +96,10 @@ Now to setup some base info, and configure bind::
 
 Restart bind with new zones::
 
-  service bind9 restart
+  systemctl bind9 restart
 
 This VM needs to use the contractor generated dns, so edit
-/etc/network/interfaces to set the dns server to 127.0.0.1
+`/etc/network/interfaces` to set the dns server to 127.0.0.1
 then, reload networking configuration::
 
   systemctl restart networking
@@ -106,25 +107,23 @@ then, reload networking configuration::
 Now to disable the extra apache site::
 
   a2dissite 000-default
-  service apache2 reload
+  systemctl restart apache2
 
-you might want to tweek /etc/apache2/sites-available/contractor.conf
+you might want to tweek `/etc/apache2/sites-available/contractor.conf`
 
-yon now take a look at the contractor ui at http://<contractor ip>
+now take a look at the contractor ui at http://<contractor ip>
 
-now we will install subcontractor::
+now we will setup subcontractor::
 
-  dpkg -i subcontractor_0*.deb subcontractor-plugins_0*.deb
-  apt install -f
   apt install tftpd-hpa
-  respkg -i contractor-ipxe_0.0.respkg
+  respkg -i contractor-ipxe_0.1.respkg
 
 now edit /etc/subcontractor.conf
 enable the modules you want to use, remove the ';' and set the 0 to a 1.
 The 1 means one task for that plugin at a time, if you want things to go faster,
 you can try 2 or 4.  Depending on the plugin, the resources of your vm, etc.
 
-edit /etc/subcontractor.conf in the dhcpd section, make sure interface and tftp_server
+edit `/etc/subcontractor.conf` in the dhcpd section, make sure interface and tftp_server
 are correct, tftp_server should be the ip of the vm
 
 now start up subcontractor::
@@ -137,16 +136,16 @@ make sure it's running::
   systemctl status subcontractor
   systemctl status dhcpd
 
-optional, edit /etc/default/tftpd-hpa and add '-v ' to TFTP_OPTIONS.  This will
+optional, edit `/etc/default/tftpd-hpa` and add '-v ' to TFTP_OPTIONS.  This will
 cause tfptd to log transfers to syslog.  This can be helpfull in troubleshooting
-boot problems. Make sure to run `service tftpd-hpa restart` to reload.
+boot problems. Make sure to run `systemctl restart tftpd-hpa` to reload.
 
 to service static resources (such as the OS installers) you will need to setup
 a static web server.  First create the directory::
 
   mkdir -p /var/www/static
 
-now create /etc/apache2/sites-available/static.conf with the following::
+now create `/etc/apache2/sites-available/static.conf` with the following::
 
   <VirtualHost *:80>
     ServerName static
@@ -162,4 +161,4 @@ now create /etc/apache2/sites-available/static.conf with the following::
 now enable the site::
 
   a2ensite static
-  service apache2 reload
+  systemctl restart apache2

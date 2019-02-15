@@ -30,28 +30,15 @@ now to build Contractor, first we need to get the node requirements for the UI, 
   cd ui && npm install && cd ..
   sed s/"export Ripple from '.\/ripple';"/"export { default as Ripple } from '.\/ripple';"/ -i ui/node_modules/react-toolbox/components/index.js
   sed s/"export Tooltip from '.\/tooltip';"/"export { default as Tooltip } from '.\/tooltip';"/ -i ui/node_modules/react-toolbox/components/index.js
-
-now build the packages::
-
-  make dpkg
-  make respkg
-  mv *.respkg ..
   cd ..
 
-now to build the others::
+now to build the packages::
 
-  for i in subcontractor contractor_plugins subcontractor_plugins; do cd $i && make dpkg && cd ..; done
+  for i in contractor subcontractor contractor_plugins subcontractor_plugins; do cd $i && make dpkg && cd ..; done
 
-and build the resources, the make in the resources can take a while, you may want
-to add `-j4` (replace the 4 with the number of compile process to parralaize)::
+and build the resources, the make in the resources can take a while, you may want to replace the 2 of the `-j2` with the number of cores you are using::
 
-  cd contractor_plugins
-  make respkg
-  mv *.respkg ..
-  cd ../resources
-  make respkg
-  mv *.respkg ..
-  cd ..
+  for i in contractor_plugins resources; do cd $i && make -j2 respkg && mv *.respkg .. && cd ..; done
 
 copy the .deb and .respkg files from the build server to the target contractor vm.
 
@@ -59,12 +46,14 @@ on the target contractor vm setup repos and install some required tools::
 
   add-apt-repository ppa:pnhowe/t3kton
   apt update
-  apt install -y bind9 postgresql-9.5
+  apt install -y bind9 bind9utils postgresql-9.5
 
 Install Packages::
 
-  dpkg -i contractor_*.deb contractor-plugins_*.deb
+  dpkg -i contractor_*.deb contractor-plugins_*.deb  subcontractor_*.deb subcontractor-plugins_*.deb
   apt install -f
+  systemctl stop dhcpd
+  systemctl stop subcontractor
 
 Installing from pre-built packages
 ----------------------------------
@@ -74,3 +63,11 @@ Setup the PPA which has the built packages::
   add-apt-repository ppa:pnhowe/t3kton
   apt update
   apt install -y respkg contractor contractor_plugins subcontractor subcontractor_plugins
+  systemctl stop dhcpd
+  systemctl stop subcontractor
+
+The resource packages are nothosted publically so you will need to build them::
+
+  git clone https://github.com/T3kton/resources.git
+  git clone https://github.com/T3kton/contractor_plugins.git
+  for i in contractor_plugins resources; do cd $i && make -j2 respkg && mv *.respkg .. && cd ..; done

@@ -8,7 +8,7 @@ and installing::
 
   add-apt-repository ppa:pnhowe/t3kton
   apt update
-  apt install -y git respkg build-essential python3-dev python3-setuptools nodejs npm nodejs-legacy liblzma-dev python3-django apache2 libapache2-mod-wsgi-py3 python3-werkzeug python3-psycopg2 python3-cinp python3-toml python3-jinja2
+  apt install -y git respkg build-essential python3-dev python3-setuptools nodejs npm nodejs-legacy liblzma-dev python3-django apache2 libapache2-mod-wsgi-py3 python3-werkzeug python3-psycopg2 python3-cinp python3-toml python3-jinja2 bind9 bind9utils
 
 Create an empty directory, and cd into it
 
@@ -30,7 +30,7 @@ now to build Contractor, first we need to get the node requirements for the UI, 
 
 and build the resources, the make in the resources can take a while, you may want to replace the 2 of the `-j2` with the number of cores you are using::
 
-  for i in contractor contractor_plugins resources; do cd $i && make -j2 respkg && mv *.respkg .. && cd ..; done
+  for i in contractor_plugins resources; do cd $i && make -j2 respkg && mv *.respkg .. && cd ..; done
 
 now to install the python, NOTE the Makefile will call './setup.py install' for you::
 
