@@ -4,16 +4,16 @@ Modules
 BluePrint
 ---------
 
-Containes BluePrint a generic base class for StructureBluePrint and FoundationBluePrint.
-Also contains the Scripts and linckages between the BluePrints and Scripts.  And
+Contains BluePrint, a generic base class for StructureBluePrint and FoundationBluePrint.
+Also contains the Scripts and linkages between the BluePrints and Scripts.  It also contains
 PXE, things to which PXE bootable devices can be set to boot to.
 
 Building
 --------
 
-Contains Foundation a generic base class for all Foundations provided by plugins.
-Structure the class for Structures that go on Foundations.  Complex, a
-grouping of Foundations (ie: a cluster).  Dependancy, allows Foundations to
+Contains Foundation, a generic base class for all Foundations provided by plugins.
+Structure, the class for Structures that go on Foundations.  Complex, a
+grouping of Foundations (ie: a cluster).  Dependency, allows Foundations to
 depend on Structures and/or jobs to be complete on a structure.
 
 Foreman
@@ -26,29 +26,29 @@ respectivly.
 Site
 ----
 
-Contains Site, for grouping Foundations and Structurres into logical groups for
-easier managment.
+Contains Site, for grouping Foundations and Structures into logical groups for
+easier management.
 
 SubContractor
 -------------
 
-interface for subcontractor, probably going to get moved to Foreman
+Interface for Subcontractor, probably going to get moved to Foreman
 
 User
 ----
 
-Handels Contractor Users.
+Handles Contractor Users.
 
 Utilities
 ---------
 
-Handels Network Interfaces, Ip Addresses, and Power interfaces (Not  all flushed out yet)
+Handles Network Interfaces, Ip Addresses, and Power interfaces (Not all flushed out yet)
 
 
 lib
 ---
 
-Common utilties for all of  Contractor
+Common utilties for all of Contractor
 
 tscript
 -------

@@ -1,13 +1,13 @@
-Install From Prebuilt Packages
-==============================
+Prebuilt Packages
+=================
 
 Building Packages
 -----------------
 
 NOTE: To build the packages, you will need a temporary Ubuntu Xenial install, you can
-use the target contractor VM if you don't mind a little extra stuff laying arround.
+use the target Contractor VM if you don't mind a little extra stuff laying arround.
 
-install the required build tools, the PPA has a few required packages for building
+Install the required build tools, the PPA has a few required packages for building
 and installing::
 
   add-apt-repository ppa:pnhowe/t3kton
@@ -16,7 +16,7 @@ and installing::
 
 Create an empty directory, and cd into it
 
-first clone the contractor and related projects::
+First clone the contractor and related projects::
 
   git clone https://github.com/T3kton/contractor.git
   git clone https://github.com/T3kton/contractor_plugins.git
@@ -24,7 +24,7 @@ first clone the contractor and related projects::
   git clone https://github.com/T3kton/subcontractor_plugins.git
   git clone https://github.com/T3kton/resources.git
 
-now to build Contractor, first we need to get the node requirements for the UI, and fix a bug with react-toolbox::
+Now to build Contractor, first we need to get the node requirements for the UI, and fix a bug with react-toolbox::
 
   cd contractor
   cd ui && npm install && cd ..
@@ -32,17 +32,17 @@ now to build Contractor, first we need to get the node requirements for the UI, 
   sed s/"export Tooltip from '.\/tooltip';"/"export { default as Tooltip } from '.\/tooltip';"/ -i ui/node_modules/react-toolbox/components/index.js
   cd ..
 
-now to build the packages::
+Now build the packages::
 
   for i in contractor subcontractor contractor_plugins subcontractor_plugins; do cd $i && make dpkg && cd ..; done
 
-and build the resources, the make in the resources can take a while, you may want to replace the 2 of the `-j2` with the number of cores you are using::
+And build the resources.  The make in the resources can take a while, you may want to replace the 2 of the `-j2` with the number of cores you are using::
 
   for i in contractor_plugins resources; do cd $i && make -j2 respkg && mv *.respkg .. && cd ..; done
 
-copy the .deb and .respkg files from the build server to the target contractor vm.
+Copy the .deb and .respkg files from the build server to the target Contractor vm.
 
-on the target contractor vm setup repos and install some required tools::
+On the target Contractor vm setup repos and install some required tools::
 
   add-apt-repository ppa:pnhowe/t3kton
   apt update

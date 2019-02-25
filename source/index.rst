@@ -4,7 +4,7 @@ Project t3kton
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+  :maxdepth: 2
 
   contractor/index
 

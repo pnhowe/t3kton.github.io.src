@@ -1,18 +1,19 @@
 Configuration Values
 ====================
 
-config value key names must match the regex::
+Config value key names must match the regex::
 
   ^[<>\-~]?([a-zA-Z0-9]+:)?[a-zA-Z0-9][a-zA-Z0-9_\-]*$
 
-if the first charater is: (also processed in this order)
-  - : remove from the value so far
-  <nothing> : overlay/replace value so far with new value
-  < : prepend to the value so far (same affect as append on dict/maps)
-  > : append to the value so far
-  ~ : mask/remove value so far, (NOTE: value is ignored)
+If the first character is: (also processed in this order)
 
-if [a-zA-Z0-9]+: is present, the value key/value is only applied if the pre ':'
+  :-: remove from the value so far
+  :<nothing>: overlay/replace value so far with new value
+  :<: prepend to the value so far (same affect as append on dict/maps)
+  :>: append to the value so far
+  :~: mask/remove value so far, (NOTE: value is ignored)
+
+If `[a-zA-Z0-9]+:` is present, the value key/value is only applied if the pre ':'
 matches the classes indicated by the foundation.  This is the **_foundation_class_list**
 
 Global and Config Attributes
@@ -20,14 +21,14 @@ Global and Config Attributes
 
 To help indicate Attributes and to keep them from getting overwritten by config values
 ( config values are not allowed to start with `_` ), Global attributes begin with `__`
-and other attributes begine with `_`.  Attributes also do not follow the value combining
+and other attributes begin with `_`.  Attributes also do not follow the value combining
 rules, as they are set internally.  They are also not affected by config classes.
 
 
 Value Merging
 -------------
 
-Configvalues are merged using Jinja2. They are merged togeather as a final step
+Configvalues are merged using Jinja2. They are merged together as a final step
 before outputting and before merging with a PXE or Boot template.
 
 For documentation on Jina2 see http://jinja.pocoo.org/
@@ -54,7 +55,7 @@ Becomes::
   dns_search: [ 'site1.local', 'local' ]
   dns_zone: 'site1.local'
 
-NOTE:  There is not sorting nor predictable order, becarefull when embeding/refrencing,
+NOTE:  There is not sorting nor predictable order, be careful when embeding/referencing,
 you may get random results.  A second (or more) evaluation round can be forced by escaping
 the '{{' ie::
 
@@ -67,11 +68,11 @@ the result will be::
 Value Overlay Rules
 -------------------
 
-For Site and BluePrint, the values of the parents are overlied by the children.
+For Site and BluePrint, the values of the parents are overlaid by the children.
 
 
-Sources of Configuraion Values
-------------------------------
+Sources of Configuration Values
+-------------------------------
 
 In general the order is blueprint, attributes, config values, and global attributes
 
@@ -81,29 +82,28 @@ For a Site
   Global attribute values
 
 For a Foundation
-  Foundation's BluePrint (with it's parents applied)
+  Foundation's BluePrint (with its parents applied)
   Foundation's attribute values (including values from a complex, if Foundation belongs to a complex)
-  Site (with it's parents applied)
+  Site (with its parents applied)
   Global attribute values
 
 For a Structure
-  Structures's BluePrint (with it's parents applied)
-  Foundation's attribute values NOTE: the Foundation's BluePrint values are NOT used, these are only for
-                                      the physicall provisioning of the Foundation, ie: BIOS settings, the
-                                      Structure can specify values for the Foundation by which FoundationBluePrints
-                                      the Structure BluePrint supports
-                               NOTE2: also includes the complex values, if the foundation belongs
-                                      to a complex
-  Site (with it's parents applied)
+  Structures's BluePrint (with its parents applied)
+  Foundation's attribute values
+  Site (with its parents applied)
   Structure's attribute values
   Structure's config_values
   Global attribute values
 
+  NOTE: the Foundation's BluePrint values are NOT used, these are only for the physical provisioning of the Foundation, ie: BIOS settings, the Structure can specify values for the Foundation by which FoundationBluePrints the Structure BluePrint supports
+
+  NOTE2: also includes the complex values, if the foundation belongs to a complex
+
 
 NOTE:
-  Sites configs are applied from the top most parent down with the child overlaing the parent.
-  BluePrint configs are applied Top down, and across each leayer, the order of sibilings is not predictable.
-  BluePrint scripts are searched BFS (Breath First Search), the order of sibilings is not predictable.
+  Site configs are applied from the top most parent down with the child overlaying the parent.
+  BluePrint configs are applied Top down, and across each layer, the order of siblings is not predictable.
+  BluePrint scripts are searched BFS (Breadth First Search), the order of siblings is not predictable.
 
 Attribute Values
 ----------------
@@ -118,9 +118,9 @@ Global attribute values
 -----------------------
 
 These values start with `__` and are not overlayable/modifyable by config_values.  These
-values are things that are global to this install of contrator,  such as the base url
+values are things that are global to this install of Contractor,  such as the base url
 to use to contact it.  `__last_modified` is also added, which is the timestamp of
-the most reset modification date to any of the sources of configuratoin information.
+the most recent modification date to any of the sources of configuration information.
 
 
 Example
@@ -161,7 +161,7 @@ provide more attribute values than what is shown)::
   | +----------+-----------+                  |
   | |                      |                  |
   | | Foundation:          |                  |
-  | |   Locater: d2r050u20 |                  |
+  | |   Locator: d2r050u20 |                  |
   | |                      |                  |
   | +----------------------+                  |
   |                                           |
@@ -194,7 +194,7 @@ One last thing we forgot, the blueprints::
   | +----------+-------------+                |    |                                                                      |
   | |                        +---------------------+ Small VM Foundation BluePrint:                                       |
   | | Foundation:            |                |    |   cpu_count: 2                                                       |
-  | |   Locater: 'd2r050u20' |                |    |   memory: 1024                                                       |
+  | |   Locator: 'd2r050u20' |                |    |   memory: 1024                                                       |
   | |                        |                |    |                                                                      |
   | +------------------------+                |    +----------------------------------------------------------------------+
   |                                           |
@@ -219,7 +219,7 @@ And the Foundation's Config Values are::
   memory: 1024
   _foundation_locator: 'd2r050u20'
 
-Everythnig was fine till our web site got busy, time to expand.  First let's
+Everything was fine until our web site got busy, time to expand.  First let's
 move our server to a sub-site and create another sub-site with it's own
 web server::
 
@@ -244,7 +244,7 @@ web server::
   | | +----------+-------------+                |  | +----------+-------------+                | |   |                                                                      |
   | | |                        +---------------------+                        +----------------------+ Small VM Foundation BluePrint:                                       |
   | | | Foundation:            |                |  | | Foundation:            |                | |   |   cpu_count: 2                                                       |
-  | | |   Locater: 'd2r050u20' |                |  | |   Locater: 'd2r020u20' |                | |   |   memory: 1024                                                       |
+  | | |   Locator: 'd2r050u20' |                |  | |   Locator: 'd2r020u20' |                | |   |   memory: 1024                                                       |
   | | |                        |                |  | |                        |                | |   |                                                                      |
   | | +------------------------+                |  | +------------------------+                | |   +----------------------------------------------------------------------+
   | |                                           |  |                                           | |
@@ -274,9 +274,9 @@ And Site 2's Structure is::
 
 At some point in the future we add another DNS server, we can add it to the top
 level and it will propagate to everything automatically.  Actually a better DNS
-design would be to add dns servers to site1 and site 2 and prepend thoes to the
+design would be to add dns servers to Site 1 and Site 2 and prepend those to the
 dns server list.  Also if we want another global dns search zone to come after
-'myservice.com', we can add it to the list at the top, and once again.  It will
-Propagate for us.  If there is a site that you do not want to  inherit the
-top level dns_search, you  would omit the **{** from the name, and the value will
-overwrite instead of pre-pend
+'myservice.com', we can add it to the list at the top, and once again it will
+propagate for us.  If there is a site that you do not want to inherit the
+top level dns_search, you would omit the **{** from the name, and the value will
+overwrite instead of pre-pend.

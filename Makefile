@@ -214,3 +214,9 @@ pseudoxml:
 	$(SPHINXBUILD) -b pseudoxml $(ALLSPHINXOPTS) $(BUILDDIR)/pseudoxml
 	@echo
 	@echo "Build finished. The pseudo-XML files are in $(BUILDDIR)/pseudoxml."
+
+
+
+.PHONY: copy
+copy:
+	rsync -av --delete --exclude .git --exclude .buildinfo --exclude objects.inv --exclude .nojekyll --exclude README.rst build/html/ ../t3kton.github.io/
