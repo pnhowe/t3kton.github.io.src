@@ -174,7 +174,7 @@ do manual plugin again so it can cross link to the other plugins::
 
 Now to setup some base info, and configure bind::
 
-  sudo /usr/lib/contractor/setup/setupWizzard --no-ip-reservation
+  sudo /usr/lib/contractor/setup/setupWizzard --no-ip-reservation --dns-server=10.0.0.10
 
 And now to create a user for us to login as for the API calls::
 
